@@ -1,0 +1,248 @@
+{
+	"info": {
+		"_postman_id": "30ae2162-eb49-4c95-9810-2b072350d33c",
+		"name": "IFT- Market Data - API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24512675"
+	},
+	"item": [
+		{
+			"name": "Symbols",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - id and symbol\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array').that.is.not.empty;",
+							"    ",
+							"    responseData.forEach(function(item) {",
+							"        pm.expect(item).to.have.property('id');",
+							"        pm.expect(item).to.have.property('symbol');",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Symbol is a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    responseData.forEach(function (item) {",
+							"        pm.expect(item.symbol).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Symbol should not be empty\");",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"The response is in JSON format\", function () {",
+							"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validate that the response is an array with at least one element\", function () {",
+							"  pm.expect(pm.response.json()).to.be.an('array').that.has.lengthOf.at.least(1);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{$url}}/symbols",
+					"host": [
+						"{{$url}}"
+					],
+					"path": [
+						"symbols"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Candles - Grouped",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.BTCUSDT).to.exist;",
+							"    pm.expect(responseData.BTCUSDT).to.be.an('array');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validate that the 'BTCUSDT' key is present in the response object\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.have.property('BTCUSDT');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Verify that the value of 'BTCUSDT' is an array\", function () {",
+							"  const responseData = pm.response.json();",
+							"",
+							"  pm.expect(responseData).to.be.an('object');",
+							"  pm.expect(responseData.BTCUSDT).to.be.an('array');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Verify that the array under 'BTCUSDT' contains exactly one element\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData).to.be.an('object');",
+							"  pm.expect(responseData.BTCUSDT).to.be.an('array').with.lengthOf(1);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{$url}}/candles/grouped?interval=3m&count=1000&symbols=BTCUSDT",
+					"host": [
+						"{{$url}}"
+					],
+					"path": [
+						"candles",
+						"grouped"
+					],
+					"query": [
+						{
+							"key": "interval",
+							"value": "3m"
+						},
+						{
+							"key": "count",
+							"value": "1000"
+						},
+						{
+							"key": "end_time",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "start_time",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "symbols",
+							"value": "BTCUSDT"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Candles",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the expected Content-Type header of application/json\", function () {",
+							"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response body is an array\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData).to.be.an('array');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response array contains at least one element\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array').that.is.not.empty;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validate the value of the first element in the response array\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array').that.is.not.empty;",
+							"    pm.expect(responseData[0]).to.equal(0);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{$url}}/candles?interval=3m&symbols=BTCUSDT&count=100",
+					"host": [
+						"{{$url}}"
+					],
+					"path": [
+						"candles"
+					],
+					"query": [
+						{
+							"key": "interval",
+							"value": "3m"
+						},
+						{
+							"key": "end_time",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "start_time",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "symbols",
+							"value": "BTCUSDT"
+						},
+						{
+							"key": "count",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "$url",
+			"value": "127.0.0.1:3000"
+		}
+	]
+}
