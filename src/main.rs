@@ -47,17 +47,18 @@ async fn main() {
 
     let predicate = DefaultPredicate::new();
 
-    let comression_layer: CompressionLayer = CompressionLayer::new()
-        .gzip(true)
-        .deflate(true)
+/*     let comression_layer: CompressionLayer = CompressionLayer::new()
+        .no_deflate()
+        .no_gzip()
+        .no_zstd()
         .no_br()
         .quality(tower_http::CompressionLevel::Best)
-        .compress_when(predicate); // Add a predicate function as an argument to the compress_when() method
+        .compress_when(predicate); // Add a predicate function as an argument to the compress_when() method */
 
     let market_routes = Router::new()
         .route("/symbols", get(routes::fetch_tickers))
         .route("/candles", get(routes::fetch_candles))
-        .layer(comression_layer)
+    //    .layer(comression_layer)
         .route("/candles/grouped", get(routes::fetch_candles_grouped))
         .layer(Extension(pool));
 
