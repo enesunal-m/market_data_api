@@ -1,5 +1,5 @@
 [package]
-name = "market_data_api"
+name = "market-data-api"
 version = "0.1.0"
 edition = "2021"
 
@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 axum = "0.7.4"
 bigdecimal = { version = "0.3.0", features = ["serde"] }
+cached = "0.48.1"
 chrono = { version = "0.4.34", features = ["serde"] }
 derive_more = "0.99.17"
 dotenv = "0.15.0"

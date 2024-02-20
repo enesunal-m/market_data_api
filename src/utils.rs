@@ -7,11 +7,11 @@ use crate::models::{Candle, CandleWithoutSymbol};
 pub fn candle_to_array(candle: Candle) -> Vec<serde_json::Value> {
     vec![
         Value::from(candle.bucket.timestamp()),
-        Value::Number(format!("{:.2}", candle.open).parse::<Number>().unwrap()),
-        Value::Number(format!("{:.2}", candle.high).parse::<Number>().unwrap()),
-        Value::Number(format!("{:.2}", candle.low).parse::<Number>().unwrap()),
-        Value::Number(format!("{:.2}", candle.close).parse::<Number>().unwrap()),
-        Value::Number(candle.volume.to_string().parse::<Number>().unwrap()),
+        Value::String(candle.open.to_string()),
+        Value::String(candle.high.to_string()),
+        Value::String(candle.low.to_string()),
+        Value::String(candle.close.to_string()),
+        Value::String(candle.volume.to_string()),
     ]
 }
 
@@ -22,11 +22,11 @@ pub fn candles_to_array(candles: Vec<Candle>) -> Vec<Vec<serde_json::Value>> {
 fn candle_without_symbol_to_array(candle: &CandleWithoutSymbol) -> Vec<Value> {
     vec![
         Value::from(candle.bucket.timestamp()),
-        Value::Number(candle.open.to_string().parse::<Number>().unwrap()),
-        Value::Number(candle.high.to_string().parse::<Number>().unwrap()),
-        Value::Number(candle.low.to_string().parse::<Number>().unwrap()),
-        Value::Number(candle.close.to_string().parse::<Number>().unwrap()),
-        Value::Number(candle.volume.to_string().parse::<Number>().unwrap()),
+        Value::String(candle.open.to_string()),
+        Value::String(candle.high.to_string()),
+        Value::String(candle.low.to_string()),
+        Value::String(candle.close.to_string()),
+        Value::String(candle.volume.to_string()),
     ]
 }
 

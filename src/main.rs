@@ -54,13 +54,17 @@ async fn main() {
         .quality(tower_http::CompressionLevel::Best)
         .compress_when(predicate); // Add a predicate function as an argument to the compress_when() method
 
-    // Router setup remains unchanged
-    let app = Router::new()
+    let market_routes = Router::new()
         .route("/symbols", get(routes::fetch_tickers))
         .route("/candles", get(routes::fetch_candles))
         .layer(comression_layer)
         .route("/candles/grouped", get(routes::fetch_candles_grouped))
         .layer(Extension(pool));
+
+    let api_routes = Router::new().nest("/market", market_routes);
+
+    // Router setup remains unchanged
+    let app = Router::new().nest("/api", api_routes);
 
     // Server setup with improved logging
     let port = 3000;
